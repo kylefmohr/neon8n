@@ -16,10 +16,10 @@ RUN \
 
 
 # Install python requirements
-RUN mkdir /requirements
-COPY requirements.txt /requirements/requirements.txt
+# RUN mkdir /requirements
+# COPY requirements.txt /requirements/requirements.txt
 RUN python -m pip install --upgrade pip setuptools wheel yt-dlp
-RUN pip install -r /requirements/requirements.txt
+# RUN pip install -r /requirements/requirements.txt
 
 # Set a custom user to not have n8n run as root
 USER root
