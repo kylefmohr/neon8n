@@ -8,6 +8,10 @@ ARG N8N_VERSION
 
 RUN if [ -z "$N8N_VERSION" ] ; then echo "The N8N_VERSION argument is missing!" ; exit 1; fi
 
+USER node
+RUN python -m pip install --upgrade pip setuptools wheel yt-dlp
+RUN echo '$PATH=$PATH:/home/node/.local/bin/' >> ~/.bashrc
+
 USER root
 
 RUN apt-get update && \
@@ -35,6 +39,4 @@ RUN cd /usr/lib/node_modules/n8n && npm install n8n-nodes-changed
 RUN cd /usr/lib/node_modules/n8n && npm install n8n-nodes-updates
 RUN cd /usr/lib/node_modules/n8n && npm install n8n-nodes-influxdb
 
-USER node
-RUN python -m pip install --upgrade pip setuptools wheel yt-dlp
-RUN echo '$PATH=$PATH:/home/node/.local/bin/' >> ~/.bashrc
+
