@@ -8,13 +8,16 @@ ARG N8N_VERSION
 
 RUN if [ -z "$N8N_VERSION" ] ; then echo "The N8N_VERSION argument is missing!" ; exit 1; fi
 
-RUN \
-	apt-get update && \
-  apt-get upgrade -y && \
-	apt-get -y install graphicsmagick gosu git sudo aria2 ffmpeg
-  
+USER root
+
+RUN apt-get update && \
+	apt-get upgrade -y && \
+	apt-get -y install graphicsmagick gosu git sudo aria2 ffmpeg python3-pip
+RUN usermod -aG sudo node
+RUN echo "node ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 
+USER node
 # Install python requirements
 # RUN mkdir /requirements
 # COPY requirements.txt /requirements/requirements.txt
@@ -22,10 +25,9 @@ RUN python -m pip install --upgrade pip setuptools wheel yt-dlp
 # RUN pip install -r /requirements/requirements.txt
 
 # Set a custom user to not have n8n run as root
-USER root
 
-RUN usermod -aG sudo node
-RUN echo "node ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+
 
 RUN npm_config_user=root npm install -g full-icu n8n@${N8N_VERSION}
 
