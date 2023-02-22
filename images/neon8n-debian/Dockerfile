@@ -17,18 +17,6 @@ RUN usermod -aG sudo node
 RUN echo "node ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 
-USER node
-# Install python requirements
-# RUN mkdir /requirements
-# COPY requirements.txt /requirements/requirements.txt
-RUN python -m pip install --upgrade pip setuptools wheel yt-dlp
-# RUN pip install -r /requirements/requirements.txt
-
-# Set a custom user to not have n8n run as root
-
-
-
-
 RUN npm_config_user=root npm install -g full-icu n8n@${N8N_VERSION}
 
 # Install n8n-nodes-python module
@@ -46,3 +34,7 @@ EXPOSE 5678/tcp
 RUN cd /usr/lib/node_modules/n8n && npm install n8n-nodes-changed
 RUN cd /usr/lib/node_modules/n8n && npm install n8n-nodes-updates
 RUN cd /usr/lib/node_modules/n8n && npm install n8n-nodes-influxdb
+
+USER node
+RUN python -m pip install --upgrade pip setuptools wheel yt-dlp
+RUN echo '$PATH=$PATH:/home/node/.local/bin/' >> ~/.bashrc
