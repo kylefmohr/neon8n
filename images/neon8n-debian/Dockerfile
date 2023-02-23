@@ -9,7 +9,7 @@ ARG N8N_VERSION
 RUN if [ -z "$N8N_VERSION" ] ; then echo "The N8N_VERSION argument is missing!" ; exit 1; fi
 
 USER node
-RUN python -m pip install --upgrade pip setuptools wheel yt-dlp
+RUN python -m pip install --upgrade pip setuptools wheel yt-dlp fire
 RUN echo '$PATH=$PATH:/home/node/.local/bin/' >> ~/.bashrc
 
 USER root
